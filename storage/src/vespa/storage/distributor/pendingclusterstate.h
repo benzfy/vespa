@@ -232,7 +232,7 @@ private:
 
     DistributorMessageSender& _sender;
     DistributorBucketSpaceRepo& _bucketSpaceRepo;
-    DistributorBucketSpaceRepo& _readOnlyBucketSpaceRepo;
+    [[maybe_unused]] DistributorBucketSpaceRepo& _readOnlyBucketSpaceRepo;
     uint32_t _clusterStateVersion;
     bool _isVersionedTransition;
     bool _bucketOwnershipTransfer;

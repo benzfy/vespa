@@ -43,7 +43,8 @@ VectorBase<DimensionVType, DimensionHType, ComponentType, HashMapComparator>::sy
     return *this;
 }
 
-template VectorBase<int64_t, int64_t, double> & VectorBase<int64_t, int64_t, double>::syncMap();
+template class VectorBase<int64_t, int64_t, feature_t>;
+template class VectorBase<EnumHandle, EnumHandle, feature_t>;
 
 
 template <typename Vector, typename Buffer>
@@ -446,6 +447,7 @@ ArrayParam<T>::~ArrayParam() = default;
 // FIXME this feels a bit dirty, consider breaking up ArrayParam to remove dependencies
 // on templated vector parsing. This is why it's defined in this translation unit as it is.
 template ArrayParam<int64_t>::ArrayParam(const Property & prop);
+template ArrayParam<int64_t>::~ArrayParam();
 template struct ArrayParam<double>;
 template struct ArrayParam<float>;
 

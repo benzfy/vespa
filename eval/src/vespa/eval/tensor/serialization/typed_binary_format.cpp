@@ -25,9 +25,9 @@ namespace  {
 constexpr uint32_t SPARSE_BINARY_FORMAT_TYPE = 1u;
 constexpr uint32_t DENSE_BINARY_FORMAT_TYPE = 2u;
 constexpr uint32_t MIXED_BINARY_FORMAT_TYPE = 3u;
-constexpr uint32_t SPARSE_BINARY_FORMAT_WITH_CELLTYPE = 5u; //Future
+//constexpr uint32_t SPARSE_BINARY_FORMAT_WITH_CELLTYPE = 5u; //Future
 constexpr uint32_t DENSE_BINARY_FORMAT_WITH_CELLTYPE = 6u;
-constexpr uint32_t MIXED_BINARY_FORMAT_WITH_CELLTYPE = 7u; //Future
+//constexpr uint32_t MIXED_BINARY_FORMAT_WITH_CELLTYPE = 7u; //Future
 
 constexpr uint32_t DOUBLE_VALUE_TYPE = 0;
 constexpr uint32_t FLOAT_VALUE_TYPE = 1;
