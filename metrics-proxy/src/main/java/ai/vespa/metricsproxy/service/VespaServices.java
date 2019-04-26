@@ -7,10 +7,12 @@ package ai.vespa.metricsproxy.service;
 import ai.vespa.metricsproxy.core.MonitoringConfig;
 import ai.vespa.metricsproxy.metric.model.DimensionId;
 import ai.vespa.metricsproxy.service.VespaServicesConfig.Service;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -28,10 +30,11 @@ import static java.util.Collections.emptyMap;
 public class VespaServices {
     private static final Logger log = Logger.getLogger(VespaServices.class.getName());
 
-    static final String SEPARATOR = ".";
+    public static final String ALL_SERVICES = "all";
+    public static final String SEPARATOR = ".";
 
     // All dimensions for each service. TODO: store in each service instead.
-    private Map<String, Map<DimensionId, String>> serviceDimensions = emptyMap();
+    private final Map<String, Map<DimensionId, String>> serviceDimensions;
 
     private final ConfigSentinelClient sentinel;
     private final List<VespaService> services;
@@ -40,12 +43,20 @@ public class VespaServices {
     public VespaServices(VespaServicesConfig config, MonitoringConfig monitoringConfig, ConfigSentinelClient sentinel) {
         this.services = createServices(config, monitoringConfig.systemName());
         this.sentinel = sentinel;
+
+        serviceDimensions = config.service().stream().collect(
+                toUnmodifiableLinkedMap(Service::id, VespaServices::createServiceDimensions));
+    }
+
+    @VisibleForTesting
+    public VespaServices(List<VespaService> services) {
+        this.services = services;
+        sentinel = null;
+        serviceDimensions = new LinkedHashMap<>();
+        services.forEach(service -> serviceDimensions.put(service.getConfigId(), emptyMap()));
     }
 
     private List<VespaService> createServices(VespaServicesConfig servicesConfig, String monitoringSystem) {
-        serviceDimensions = servicesConfig.service().stream().collect(
-                toUnmodifiableLinkedMap(Service::id, VespaServices::getServiceDimensions));
-
         List<VespaService> services = new ArrayList<>();
         for (Service s : servicesConfig.service()) {
             log.log(DEBUG, "Re-configuring service " + s.name());
@@ -100,7 +111,7 @@ public class VespaServices {
      * @return A list of VespaServices
      */
     public List<VespaService> getMonitoringServices(String service) {
-        if (service.equalsIgnoreCase("all"))
+        if (service.equalsIgnoreCase(ALL_SERVICES))
             return services;
 
         List<VespaService> myServices = new ArrayList<>();
@@ -119,7 +130,7 @@ public class VespaServices {
         return serviceDimensions.get(configid);
     }
 
-    private static Map<DimensionId, String> getServiceDimensions(Service service) {
+    private static Map<DimensionId, String> createServiceDimensions(Service service) {
         return service.dimension().stream().collect(
                 toUnmodifiableLinkedMap(dim -> toDimensionId(dim.key()), Service.Dimension::value));
     }

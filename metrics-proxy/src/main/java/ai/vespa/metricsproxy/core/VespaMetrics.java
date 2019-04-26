@@ -169,7 +169,7 @@ public class VespaMetrics {
      * Returns all configured metrics (for any consumer) that have the given id as 'name'.
      */
     private static Set<ConsumersConfig.Consumer.Metric> getConfiguredMetrics(String id,
-                                                                                Set<ConsumersConfig.Consumer.Metric> configuredMetrics) {
+                                                                             Set<ConsumersConfig.Consumer.Metric> configuredMetrics) {
         return configuredMetrics.stream()
                 .filter(m -> m.name().equals(id))
                 .collect(Collectors.toSet());

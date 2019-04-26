@@ -45,8 +45,6 @@ public class VespaService implements Comparable<VespaService> {
         return new VespaService(serviceName, name, id, statePort);
     }
 
-    // GVL TODO: constructors are only used from tests. Try to keep them package-private.
-
     VespaService(String serviceName, String id) {
         this(serviceName, serviceName, id, -1);
     }
@@ -76,24 +74,6 @@ public class VespaService implements Comparable<VespaService> {
         } else {
             return this.monitoringName;
         }
-    }
-
-    /**
-     * Get the http port for state/v1
-     *
-     * @return health http port
-     */
-    int getStatePort() {
-        return this.statePort;
-    }
-
-    /**
-     * Returns true if the service has an http status port
-     *
-     * @return true if the services has an HTTP status port, false otherwise
-     */
-    boolean hasStatusPort() {
-        return this.statePort > 0;
     }
 
     @Override

@@ -75,13 +75,13 @@ public class RpcServer {
 
         connector.addMethod(
                 new Method("getMetricsForYamas", "s", "s", this::getMetricsForYamas)
-                        .methodDesc("Get JSON formatted Vespa metrics for a given service name, 'all' or 'system'")
-                        .paramDesc(0, "service", "The vespa service name, special restricted names 'all' and 'system'")
+                        .methodDesc("Get JSON formatted Vespa metrics for a given service name or 'all'")
+                        .paramDesc(0, "service", "The vespa service name, or 'all'")
                         .returnDesc(0, "ret", "Vespa metrics"));
 
         connector.addMethod(
                 new Method("getHealthMetricsForYamas", "s", "s", this::getHealthMetricsForYamas)
-                        .methodDesc("Get JSON formatted Health check for a given service name, 'all' or 'system'")
+                        .methodDesc("Get JSON formatted Health check for a given service name or 'all'")
                         .paramDesc(0, "service", "The vespa service name")
                         .returnDesc(0, "ret", "Vespa metrics"));
 
@@ -190,7 +190,7 @@ public class RpcServer {
             this.request = request;
         }
 
-        public long spentTime() {
+        long spentTime() {
             return System.currentTimeMillis() - startTime;
         }
 
