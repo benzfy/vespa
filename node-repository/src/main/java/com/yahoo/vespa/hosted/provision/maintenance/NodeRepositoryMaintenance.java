@@ -144,7 +144,7 @@ public class NodeRepositoryMaintenance extends AbstractComponent {
             return Optional.ofNullable(policyName).map(NodeFailer.ThrottlePolicy::valueOf);
         } catch (IllegalArgumentException e) {
             log.info(String.format("Ignoring invalid throttle policy name: '%s'. Must be one of %s", policyName,
-                                   Arrays.toString(NodeFailer.ThrottlePolicy.values())));
+                                   Arrays.toString(NodeFailer.Throttle\Policy.values())));
             return Optional.empty();
         }
     }

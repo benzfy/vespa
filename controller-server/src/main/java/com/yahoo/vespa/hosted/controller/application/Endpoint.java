@@ -48,7 +48,10 @@ public class Endpoint {
 
     /** Returns the DNS name of this */
     public String dnsName() {
-        return url.getHost();
+        String host = url.getHost();
+        if (host != null)
+            return host;
+        return url.getAuthority();
     }
 
     /** Returns the scope of this */
@@ -243,6 +246,23 @@ public class Endpoint {
                 throw new IllegalArgumentException("Cannot set both cluster and rotation target");
             }
             this.rotation = rotation;
+            return this;
+        }
+
+        public EndpointBuilder wildcardRotationTarget() {
+            if(cluster != null || zone != null) {
+                throw new IllegalArgumentException("Cannot set both cluster and rotation target");
+            }
+            this.rotation = RotationName.from("*");
+            return this;
+        }
+
+        public EndpointBuilder wildcardZoneTarget(ZoneId zone) {
+            if(rotation != null) {
+                throw new IllegalArgumentException("Cannot set both cluster and rotation target");
+            }
+            this.zone = zone;
+            this.cluster = ClusterSpec.Id.from("*");
             return this;
         }
 
