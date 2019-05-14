@@ -199,6 +199,7 @@ public class Admin extends AbstractConfigProducer implements Serializable {
      * Adds services to all hosts in the system.
      */
     public void addPerHostServices(List<HostResource> hosts, DeployState deployState) {
+        log.warning("GVL: addPerHostServices");
         if (slobroks.isEmpty()) // TODO: Move to caller
             slobroks.addAll(createDefaultSlobrokSetup(deployState.getDeployLogger()));
 
@@ -213,9 +214,11 @@ public class Admin extends AbstractConfigProducer implements Serializable {
     }
 
     private void addMetricsProxyCluster(List<HostResource> hosts, DeployState deployState) {
+        log.warning("GVL: addMetricsProxyCluster");
         var metricsProxyCluster = new MetricsProxyContainerCluster(this, "metrics", deployState);
         int index = 0;
         for (var host : hosts) {
+            log.warning("GVL: Adding MPC for " + host);
             var container = new MetricsProxyContainer(metricsProxyCluster, index++, deployState.isHosted());
             addAndInitializeService(deployState.getDeployLogger(), host, container);
             metricsProxyCluster.addContainer(container);
