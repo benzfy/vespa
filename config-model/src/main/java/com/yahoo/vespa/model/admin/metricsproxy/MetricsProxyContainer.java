@@ -109,6 +109,9 @@ public class MetricsProxyContainer extends Container implements
 
     @Override
     public void getConfig(VespaServicesConfig.Builder builder) {
+        System.err.println("GVL: generating services config for host '" + getHostResource());
+        System.err.println("GVL: host has services:");
+        getHostResource().getServices().forEach(System.err::println);
         builder.service.addAll(VespaServicesConfigGenerator.generate(getHostResource().getServices()));
     }
 

@@ -23,7 +23,9 @@ public class VespaServicesConfigGenerator {
     }
 
     private static boolean doIncludeServiceMetrics(Service s) {
-        return s.getStartupCommand() != null || s.getServiceType().equals("configserver") || s.getServiceType().equals("config-sentinel");
+        boolean foo = s.getStartupCommand() != null || s.getServiceType().equals("configserver") || s.getServiceType().equals("config-sentinel");
+        System.err.println("GVL: doIncludeServiceMetrics for " + s.getServiceName() + ": " + foo);
+        return foo;
     }
 
     private static VespaServicesConfig.Service.Builder toServiceBuilder(Service service) {
